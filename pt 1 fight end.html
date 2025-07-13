@@ -1,0 +1,402 @@
+<!doctype html>
+<html>
+<head>
+  <title>Stuck in the Backrooms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #8ebadc, #4e9b51);
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scene {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .scene.active {
+      display: flex;
+    }
+
+    #container {
+      width: 960px;
+      height: 540px;
+      position: relative;
+      margin: auto;
+      background: #333;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    #container img.background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 960px;
+      height: 540px;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 1;
+    }
+
+    .text-box {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 870px;
+      height: 130px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border: 2px solid white;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 1;
+      text-align: center;
+      color: white;
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .typewriter {
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-size: 24px;
+      color: white;
+      white-space: normal;
+    }
+
+    .qn-box {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 870px;
+      height: 260px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border: 2px solid white;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 1;
+      text-align: center;
+      color: white;
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      user-select: none;
+      cursor: pointer;
+    }
+
+
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    #fade-in-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 1;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    #fade-in-overlay.fade-in-complete {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .name-box {
+      position: absolute;
+      bottom: 160px;
+      left: 50%;
+      width: 220px;
+      height: 40px;
+      background-color: black;
+      border: 2px solid white;
+      border-radius: 0;
+      color: white;
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 5px 10px;
+      z-index: 10;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      transform: translateX(calc(-50% - 312.5px)); 
+    }
+
+    .button-group {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column; /* stack vertically */
+      align-items: center;    /* center buttons horizontally */
+      gap: 5px;              /* space between buttons */
+    }
+
+    .scene-btn {
+      background-color: rgba(180, 180, 180, 0.3);
+      border: none;
+      border-radius: 0;        /* no rounded corners */
+      padding: 10px 40px;      /* more horizontal padding */
+      font-family: 'Fuzzy Bubbles', cursive;
+      font-weight: 700;
+      font-size: 16px;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(180, 180, 180, 0.2);
+      transition: all 0.3s ease;
+      
+      width: 800px;            /* fixed width */
+      text-align: left;        /* left-align text */
+    }
+
+    .scene-btn:hover {
+      background-color: rgba(180, 180, 180, 0.5);
+      box-shadow: 0 0 20px rgba(180, 180, 180, 0.5), 0 0 40px rgba(180, 180, 180, 0.3);
+      color: #ffffff;
+    }
+
+    .button-group.whitedoor {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    #black-transition {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: opacity 0.7s ease;
+    }
+
+    #black-transition.active {
+      opacity: 1;
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+
+
+<!-- SCENE 2: fading away monster --> 
+<div id="scene1" class="scene active">
+  <div id="container">
+    <img src="closed door, sky and grass.png" alt="Background" class="background" />
+    <div class="text-box" onclick="goToScene(2)">
+      <span class="typewriter" data-text="(Good riddance)"></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- SCENE 3: going through white door --> 
+<div id="scene2" class="scene">
+  <div id="container">
+    <img src="open door, sky and grass.png" alt="Background" class="background" />
+    <div class="button-group whitedoor">
+        <button class="scene-btn" onclick="fadeToBlackAndGo('pt 2.html')">Enter White door</button>
+    </div>
+  </div>
+</div>
+
+<audio id="bg-music" src="calm.mp3" autoplay loop></audio>
+
+<script>
+  let typingTimer = null; // Global reference to the current typing timer
+
+  window.addEventListener("load", () => {
+  const overlay = document.getElementById('fade-in-overlay');
+  overlay?.classList.add('fade-in-complete');
+
+  typeInActiveScene();
+
+  const music = document.getElementById('bg-music');
+  music.volume = 0.5; // optional
+  music.play().catch(() => {
+    // If autoplay is blocked, try after user interaction
+    const resumeMusic = () => {
+      music.play();
+      window.removeEventListener('click', resumeMusic);
+    };
+    window.addEventListener('click', resumeMusic);
+  });
+});
+
+  
+  function goToScene(sceneNumber) {
+    // Stop any current typing animation
+    if (typingTimer) clearTimeout(typingTimer);
+
+    document.querySelectorAll('.scene').forEach(scene => {
+      scene.classList.remove('active');
+    });
+
+    const nextScene = document.getElementById('scene' + sceneNumber);
+    if (nextScene) {
+      nextScene.classList.add('active');
+      typeInActiveScene();
+    }
+  }
+
+  function typeInActiveScene() {
+    const activeScene = document.querySelector('.scene.active');
+    const typeElem = activeScene?.querySelector('.typewriter');
+
+    if (!typeElem) return;
+
+    const fullText = typeElem.getAttribute('data-text') || "";
+    typeElem.innerHTML = "";
+
+    let i = 0;
+    function typeNextChar() {
+      // If finished typing, clear timer
+      if (i >= fullText.length) {
+        typingTimer = null;
+        return;
+      }
+
+      typeElem.innerHTML += fullText.charAt(i);
+      i++;
+      typingTimer = setTimeout(typeNextChar, 35);
+    }
+
+    typeNextChar();
+
+    // Handle skipping on click
+    const box = activeScene.querySelector('.text-box');
+    box.onclick = () => {
+      if (typingTimer) {
+        clearTimeout(typingTimer);
+        typingTimer = null;
+        typeElem.innerHTML = fullText;
+      } else {
+        // Already fully typed, move to next scene (optional behavior)
+        const currentId = activeScene.id;
+        const currentSceneNum = parseInt(currentId.replace('scene', ''));
+        goToScene(currentSceneNum + 1);
+      }
+    };
+  }
+  const box = activeScene.querySelector('.text-box');
+const skipEnabled = box?.getAttribute('data-skip-enabled') !== 'false';
+
+if (skipEnabled) {
+  box.onclick = () => {
+    if (typingTimer) {
+      clearTimeout(typingTimer);
+      typingTimer = null;
+      typeElem.innerHTML = fullText;
+    } else {
+      const currentId = activeScene.id;
+      const currentSceneNum = parseInt(currentId.replace('scene', ''));
+      
+      if (currentId === 'scene12') {
+        window.location.href = 'pt 1 fight.html';
+      } else {
+        goToScene(currentSceneNum + 1);
+      }
+    }
+  };
+}
+function typeInActiveScene() {
+  const activeScene = document.querySelector('.scene.active');
+  const typeElem = activeScene?.querySelector('.typewriter');
+  const fullText = typeElem?.getAttribute('data-text') || "";
+  if (!typeElem) return;
+
+  typeElem.innerHTML = "";
+  let i = 0;
+
+  function typeNextChar() {
+    if (i >= fullText.length) {
+      typingTimer = null;
+      return;
+    }
+    typeElem.innerHTML += fullText.charAt(i);
+    i++;
+    typingTimer = setTimeout(typeNextChar, 35);
+  }
+
+  typeNextChar();
+
+  const box = activeScene.querySelector('.text-box');
+  const skipEnabled = box?.getAttribute('data-skip-enabled') !== 'false';
+
+  if (box && skipEnabled) {
+    box.onclick = () => {
+      if (typingTimer) {
+        clearTimeout(typingTimer);
+        typingTimer = null;
+        typeElem.innerHTML = fullText;
+      } else {
+        const currentId = activeScene.id;
+        const currentSceneNum = parseInt(currentId.replace('scene', ''));
+        if (currentId === 'scene12') {
+          window.location.href = 'pt 1 fight.html';
+        } else {
+          goToScene(currentSceneNum + 1);
+        }
+      }
+    };
+  }
+}
+
+function handleQuizAnswer(isCorrect, nextScene) {
+  if (isCorrect) {
+    goToScene(nextScene); // move to next scene
+  } else {
+    alert("Wrong Answer! Try again."); // popup
+  }
+}
+
+function fadeToBlackAndGo(targetUrl) {
+  const overlay = document.getElementById('black-transition');
+  overlay.classList.add('active');
+
+  setTimeout(() => {
+    window.location.href = targetUrl;
+  }, 700); // match the CSS transition timing
+}
+
+</script>
+
+<div id="black-transition"></div>
+
+</body>
+</html>
+

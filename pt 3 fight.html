@@ -1,0 +1,543 @@
+<!doctype html>
+<html>
+<head>
+  <title>Stuck in the Backrooms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #43472a, #6f7349);
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scene {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .scene.active {
+      display: flex;
+    }
+
+    #container {
+      width: 960px;
+      height: 540px;
+      position: relative;
+      margin: auto;
+      background: #333;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    #container img.background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 960px;
+      height: 540px;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 1;
+    }
+
+    .text-box {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 870px;
+      height: 130px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border: 2px solid white;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 1;
+      text-align: center;
+      color: white;
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .typewriter {
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-size: 24px;
+      color: white;
+      white-space: normal;
+    }
+
+    .qn-box {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 870px;
+      height: 260px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border: 2px solid white;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 1;
+      text-align: center;
+      color: white;
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      user-select: none;
+      cursor: pointer;
+    }
+
+
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    #fade-in-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 1;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    #fade-in-overlay.fade-in-complete {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .name-box {
+      position: absolute;
+      bottom: 160px;
+      left: 50%;
+      width: 220px;
+      height: 40px;
+      background-color: black;
+      border: 2px solid white;
+      border-radius: 0;
+      color: white;
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 5px 10px;
+      z-index: 10;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      transform: translateX(calc(-50% - 312.5px)); 
+    }
+
+    .button-group {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column; /* stack vertically */
+      align-items: center;    /* center buttons horizontally */
+      gap: 5px;              /* space between buttons */
+    }
+
+    .scene-btn {
+      background-color: rgba(180, 180, 180, 0.3);
+      border: none;
+      border-radius: 0;        /* no rounded corners */
+      padding: 10px 40px;      /* more horizontal padding */
+      font-family: 'Fuzzy Bubbles', cursive;
+      font-weight: 700;
+      font-size: 16px;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(180, 180, 180, 0.2);
+      transition: all 0.3s ease;
+      
+      width: 800px;            /* fixed width */
+      text-align: left;        /* left-align text */
+    }
+
+    .scene-btn:hover {
+      background-color: rgba(180, 180, 180, 0.5);
+      box-shadow: 0 0 20px rgba(180, 180, 180, 0.5), 0 0 40px rgba(180, 180, 180, 0.3);
+      color: #ffffff;
+    }
+
+    .button-group.whitedoor {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    #black-transition {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: opacity 0.7s ease;
+    }
+
+    #black-transition.active {
+      opacity: 1;
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+
+<!-- SCENE 1: monster monologue--> 
+<div id="scene1" class="scene active">
+  <div id="container">
+    <img src="deepfake monster , backrooms.png" alt="Background" 
+    class="background" />
+    <div class="name-box">Deepfake monster</div>
+    <div class="text-box" onclick="goToScene(2)">
+      <span class="typewriter" data-text="I have played these games before!!! You can't beat me!"></span>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 2: question 1 --> 
+<div id="scene2" class="scene">
+  <div id="container">
+    <img src="full deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="qn-box"data-skip-enabled="false">
+      <span class="typewriter" data-text="Q1. What makes deepfakes dangerous?"></span>
+      <div class="button-group">
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">1. They look funny</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">2. They increase your chances of becoming a meme</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(true,3)">3. They look very realistic and can fool people</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">4. They make people look cooler</button>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 3: question 2 --> 
+<div id="scene3" class="scene">
+  <div id="container">
+    <img src="7_8 deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="qn-box"data-skip-enabled="false">
+      <span class="typewriter" data-text="Q2. What could be a clue that a video might be a deepfake?"></span>
+      <div class="button-group">
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">1. Perfect lighting in every scene</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">2. Smooth and natural eye blinking</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(true,4)">3. Inconsistent skin tone or strange lighting on the face</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">4. High-definition quality throughout</button>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 4: question 3 --> 
+<div id="scene4" class="scene">
+  <div id="container">
+    <img src="6_8 deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="qn-box"data-skip-enabled="false">
+      <span class="typewriter" data-text="Q3. What is a possible sign that a video is a deepfake?"></span>
+      <div class="button-group">
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">1. The person's outfit is trendy</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">2. The background music is too loud</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">3. The video has subtitles</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(true,5)">4. The hands have too many fingers or the face has blured edges</button>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 5: question 4 --> 
+<div id="scene5" class="scene">
+  <div id="container">
+    <img src="5_8 deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="qn-box" data-skip-enabled="false">
+      <span class="typewriter" data-text="Q4. How can you spot a deepfake based off the eyes?"></span>
+      <div class="button-group">
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">1. Eyes are bright and colourful</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(true,6)">2. Pupil size does not change</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">3. The person stares directly at the camera for too long</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">4. The person wears glasses</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 6: question 5 --> 
+<div id="scene6" class="scene">
+  <div id="container">
+    <img src="4_8 deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="qn-box" data-skip-enabled="false">
+      <span class="typewriter" data-text="Q5. What is a common malicious use of deepfakes? "></span>
+      <div class="button-group">
+        <button class="scene-btn" onclick="handleQuizAnswer(true,7)">1. Impersonating governments or banks to scam people</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">1. Making cat videos</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">3. Making a deepfake of your principal announcing homework is banned</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">4. Creating weather reports that only report sunny weather</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 7: question 6 --> 
+<div id="scene7" class="scene">
+  <div id="container">
+    <img src="3_8 deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="qn-box" data-skip-enabled="false">
+      <span class="typewriter" data-text="Q6. What is a major impact of deepfakes on society?"></span>
+      <div class="button-group">
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">1. They improve online privacy</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">2. They help to spread reliable news</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">3. They are used for entertainment</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(true,8)">4. They damage the trust people have in online videos</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 8: question 7 --> 
+<div id="scene8" class="scene">
+  <div id="container">
+    <img src="2_8 deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="qn-box" data-skip-enabled="false">
+      <span class="typewriter" data-text="Q7.What is one reason why deepfakes are hard to regulate?"></span>
+      <div class="button-group">
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">1. They're only used for fun</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">2. They don't affect real people</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(true,9)">3. Technology is evolving faster than laws can keep up</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">4. Everyone knows how to spot them</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 9: question 8 --> 
+<div id="scene9" class="scene">
+  <div id="container">
+    <img src="1_8 deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="qn-box" data-skip-enabled="false">
+      <span class="typewriter" data-text="Q8. What can you do to protect yourself against misinformation?"></span>
+      <div class="button-group">
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">1. Believing everything you see online</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">2. Sharing every single video that you see online</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(true,10)">3. Fact-checking content before trusting or reposting</button>
+        <button class="scene-btn" onclick="handleQuizAnswer(false)">4. Ignoring deepfakes completely</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 10: monster how did u defeat me kinda bs --> 
+<div id="scene10" class="scene">
+  <div id="container">
+    <img src="defeated deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="name-box">Deepfake monster</div>
+    <div class="text-box" onclick="goToScene(11)">
+      <span class="typewriter" data-text="HOW DID I LOSE? MY STRATEGY WAS PERFEEeeeeecccct...."></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- SCENE 11: going through white door --> 
+<div id="scene11" class="scene">
+  <div id="container">
+    <img src="defeated deepfake monster backrooms.png" alt="Background" class="background" />
+    <div class="button-group whitedoor">
+        <button class="scene-btn" onclick="fadeToBlackAndGo('escaped.html')">Continue</button>
+    </div>
+  </div>
+</div>
+
+<audio id="bg-music" src="swallow hollow.mp3" autoplay loop></audio>
+
+<script>
+  let typingTimer = null; // Global reference to the current typing timer
+
+  window.addEventListener("load", () => {
+    // Fade-in overlay
+    const overlay = document.getElementById('fade-in-overlay');
+    overlay?.classList.add('fade-in-complete');
+
+    // Start typewriter
+    typeInActiveScene();
+
+  
+    const music = document.getElementById('bg-music');
+    const startMusic = () => {
+      music.play().catch(err => console.log("Autoplay blocked:", err));
+      window.removeEventListener('click', startMusic);
+    };
+    window.addEventListener('click', startMusic);
+  });
+
+  function goToScene(sceneNumber) {
+    // Stop any current typing animation
+    if (typingTimer) clearTimeout(typingTimer);
+
+    document.querySelectorAll('.scene').forEach(scene => {
+      scene.classList.remove('active');
+    });
+
+    const nextScene = document.getElementById('scene' + sceneNumber);
+    if (nextScene) {
+      nextScene.classList.add('active');
+      typeInActiveScene();
+    }
+  }
+
+  function typeInActiveScene() {
+    const activeScene = document.querySelector('.scene.active');
+    const typeElem = activeScene?.querySelector('.typewriter');
+
+    if (!typeElem) return;
+
+    const fullText = typeElem.getAttribute('data-text') || "";
+    typeElem.innerHTML = "";
+
+    let i = 0;
+    function typeNextChar() {
+      // If finished typing, clear timer
+      if (i >= fullText.length) {
+        typingTimer = null;
+        return;
+      }
+
+      typeElem.innerHTML += fullText.charAt(i);
+      i++;
+      typingTimer = setTimeout(typeNextChar, 35);
+    }
+
+    typeNextChar();
+
+    // Handle skipping on click
+    const box = activeScene.querySelector('.text-box');
+    box.onclick = () => {
+      if (typingTimer) {
+        clearTimeout(typingTimer);
+        typingTimer = null;
+        typeElem.innerHTML = fullText;
+      } else {
+        // Already fully typed, move to next scene (optional behavior)
+        const currentId = activeScene.id;
+        const currentSceneNum = parseInt(currentId.replace('scene', ''));
+        goToScene(currentSceneNum + 1);
+      }
+    };
+  }
+  const box = activeScene.querySelector('.text-box');
+const skipEnabled = box?.getAttribute('data-skip-enabled') !== 'false';
+
+if (skipEnabled) {
+  box.onclick = () => {
+    if (typingTimer) {
+      clearTimeout(typingTimer);
+      typingTimer = null;
+      typeElem.innerHTML = fullText;
+    } else {
+      const currentId = activeScene.id;
+      const currentSceneNum = parseInt(currentId.replace('scene', ''));
+      
+      if (currentId === 'scene12') {
+        window.location.href = 'pt 1 fight.html';
+      } else {
+        goToScene(currentSceneNum + 1);
+      }
+    }
+  };
+}
+function typeInActiveScene() {
+  const activeScene = document.querySelector('.scene.active');
+  const typeElem = activeScene?.querySelector('.typewriter');
+  const fullText = typeElem?.getAttribute('data-text') || "";
+  if (!typeElem) return;
+
+  typeElem.innerHTML = "";
+  let i = 0;
+
+  function typeNextChar() {
+    if (i >= fullText.length) {
+      typingTimer = null;
+      return;
+    }
+    typeElem.innerHTML += fullText.charAt(i);
+    i++;
+    typingTimer = setTimeout(typeNextChar, 35);
+  }
+
+  typeNextChar();
+
+  const box = activeScene.querySelector('.text-box');
+  const skipEnabled = box?.getAttribute('data-skip-enabled') !== 'false';
+
+  if (box && skipEnabled) {
+    box.onclick = () => {
+      if (typingTimer) {
+        clearTimeout(typingTimer);
+        typingTimer = null;
+        typeElem.innerHTML = fullText;
+      } else {
+        const currentId = activeScene.id;
+        const currentSceneNum = parseInt(currentId.replace('scene', ''));
+        if (currentId === 'scene12') {
+          window.location.href = 'pt 1 fight.html';
+        } else {
+          goToScene(currentSceneNum + 1);
+        }
+      }
+    };
+  }
+}
+
+function handleQuizAnswer(isCorrect, nextScene) {
+  if (isCorrect) {
+    goToScene(nextScene); // move to next scene
+  } else {
+    alert("Wrong Answer! Try again."); // popup
+  }
+}
+
+function fadeToBlackAndGo(targetUrl) {
+  const overlay = document.getElementById('black-transition');
+  overlay.classList.add('active');
+
+  setTimeout(() => {
+    window.location.href = targetUrl;
+  }, 700); // match the CSS transition timing
+}
+
+</script>
+
+<div id="black-transition"></div>
+
+</body>
+</html>
+

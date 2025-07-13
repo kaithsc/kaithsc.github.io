@@ -1,0 +1,439 @@
+<!doctype html>
+<html>
+<head>
+  <title>Stuck in the Backrooms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #b79e24, #7c6f29);
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scene {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .scene.active {
+      display: flex;
+    }
+
+    #container {
+      width: 960px;
+      height: 540px;
+      position: relative;
+      margin: auto;
+      background: #333;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    #container img.background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 960px;
+      height: 540px;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 1;
+    }
+
+    .text-box {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 870px;
+      height: 130px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border: 2px solid white;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 1;
+      text-align: center;
+      color: white;
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .typewriter {
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-size: 24px;
+      color: white;
+      white-space: normal;
+    }
+
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+
+    .arrow {
+      position: absolute;
+      top: 50%;                        /* vertical center */
+      width: 60px;                     /* adjust as needed */
+      height: 60px;
+      transform: translateY(-50%);     /* perfectly center vertically */
+      cursor: pointer;
+      z-index: 2;
+      transition: transform 0.2s ease;
+      }
+
+      .arrow:hover {
+        transform: translateY(-50%) scale(1.1); /* zoom on hover */
+      }
+
+      .arrowleft {
+        left: 200px;                      /* stick to left side */
+      }
+
+      .arrowright {
+        right: 200px;                     /* stick to right side */
+      }
+
+
+    #fade-in-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 1;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    #fade-in-overlay.fade-in-complete {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .name-box {
+      position: absolute;
+      bottom: 160px;
+      left: 50%;
+      width: 200px;
+      height: 40px;
+      background-color: black;
+      border: 2px solid white;
+      border-radius: 0;
+      color: white;
+      font-family: 'Fuzzy Bubbles', sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 5px 10px;
+      z-index: 10;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      transform: translateX(calc(-50% - 322.5px)); /* moved 12.5px left from -310px */
+    }
+
+    .button-group {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 20px; /* space between buttons */
+    }
+
+    .button-group.whitedoor {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .scene-btn {
+      background-color: rgba(180, 180, 180, 0.3); /* translucent grey */
+      border: none;
+      border-radius: 6px;
+      padding: 10px 25px;
+      font-family: 'Fuzzy Bubbles', cursive;
+      font-weight: 700;
+      font-size: 18px;
+      color: #ffffff; /* white text for contrast */
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(180, 180, 180, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .scene-btn:hover {
+      background-color: rgba(180, 180, 180, 0.5); /* slightly darker on hover */
+      box-shadow: 0 0 20px rgba(180, 180, 180, 0.5), 0 0 40px rgba(180, 180, 180, 0.3);
+      color: #ffffff;
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+
+<!-- SCENE 1: Waking up --> 
+<div id="scene1" class="scene active">
+  <div id="container">
+    <img src="pages, long corridor pt2.png" alt="Background" class="background" />
+    <div class="text-box" onclick="goToScene(2)">
+      <span class="typewriter" data-text="(Guess I haven't escaped yet...)"></span>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 2: door -->
+<div id="scene2" class="scene">
+  <div id="container">
+    <img src="pages, long corridor pt2.png" alt="Background" class="background" />
+    <div class="text-box" onclick="goToScene(3)">
+      <span class="typewriter" data-text="(Oh, some of the torn out pages from the survival handbook are here. )"></span>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 3: Reading first page -->
+<div id="scene3" class="scene">
+  <div id="container">
+    <img src="torn page 1, long corridor pt2.png" alt="Background" class="background" />
+    <img src="right arrow.png" class="arrow arrowright" onclick="goToScene(4)">
+  </div>
+</div>
+
+<!-- SCENE 4: Reading second page -->
+<div id="scene4" class="scene">
+  <div id="container">
+    <img src="torn page 2, long corridor pt2.png" alt="Background" class="background" />
+    <img src="left arrow.png" class="arrow arrowleft" onclick="goToScene(3)"/>
+    <img src="right arrow.png" class="arrow arrowright" onclick="goToScene(5)">
+  </div>
+</div>
+
+<!-- SCENE 5: Reading third page -->
+<div id="scene5" class="scene">
+  <div id="container">
+    <img src="torn page 3, long corridor pt2.png" alt="Background" class="background" />
+    <img src="left arrow.png" class="arrow arrowleft" onclick="goToScene(4)"/>
+    <img src="right arrow.png" class="arrow arrowright" onclick="goToScene(6)">
+  </div>
+</div>
+
+<!-- SCENE 6: Reading fourth page -->
+<div id="scene6" class="scene">
+  <div id="container">
+    <img src="torn page 4, long corridor pt2.png" alt="Background" class="background" />
+    <img src="left arrow.png" class="arrow arrowleft" onclick="goToScene(5)"/>
+    <img src="right arrow.png" class="arrow arrowright" onclick="goToScene(7)">
+  </div>
+</div>
+
+<!-- SCENE 7: Reading fifth page -->
+<div id="scene7" class="scene">
+  <div id="container">
+    <img src="torn page 5, long corridor pt2.png" alt="Background" class="background" />
+    <img src="left arrow.png" class="arrow arrowleft" onclick="goToScene(6)"/>
+    <img src="right arrow.png" class="arrow arrowright" onclick="goToScene(8)">
+  </div>
+</div>
+
+<!-- SCENE 8: found the rest of the pages-->
+<div id="scene8" class="scene">
+  <div id="container">
+    <img src="torn page 5, long corridor pt2.png" alt="Background" class="background" />
+    <div class="text-box" onclick="goToScene(9)">
+      <span class="typewriter" data-text="(I guess this is where the remaining pages went)"></span>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 9: moving on --> 
+<div id="scene9" class="scene">
+  <div id="container">
+    <img src="long corridor pt2.png" alt="Background" class="background" />
+    <div class="button-group whitedoor">
+        <button class="scene-btn" onclick="fadeToBlackAndGo('pt 2 white door.html')">Continue</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="fade-in-overlay"></div>
+<audio id="bg-music" src="long way down.mp3" autoplay loop></audio>
+
+<script>
+  let typingTimer = null; // Global reference to the current typing timer
+
+  window.addEventListener("load", () => {
+    // Fade-in overlay
+    const overlay = document.getElementById('fade-in-overlay');
+    overlay?.classList.add('fade-in-complete');
+
+    // Start typewriter
+    typeInActiveScene();
+
+  
+    const music = document.getElementById('bg-music');
+    const startMusic = () => {
+      music.play().catch(err => console.log("Autoplay blocked:", err));
+      window.removeEventListener('click', startMusic);
+    };
+    window.addEventListener('click', startMusic);
+  });
+
+  function goToScene(sceneNumber) {
+    // Stop any current typing animation
+    if (typingTimer) clearTimeout(typingTimer);
+
+    document.querySelectorAll('.scene').forEach(scene => {
+      scene.classList.remove('active');
+    });
+
+    const nextScene = document.getElementById('scene' + sceneNumber);
+    if (nextScene) {
+      nextScene.classList.add('active');
+      typeInActiveScene();
+    }
+  }
+
+  function typeInActiveScene() {
+    const activeScene = document.querySelector('.scene.active');
+    const typeElem = activeScene?.querySelector('.typewriter');
+
+    if (!typeElem) return;
+
+    const fullText = typeElem.getAttribute('data-text') || "";
+    typeElem.innerHTML = "";
+
+    let i = 0;
+    function typeNextChar() {
+      // If finished typing, clear timer
+      if (i >= fullText.length) {
+        typingTimer = null;
+        return;
+      }
+
+      typeElem.innerHTML += fullText.charAt(i);
+      i++;
+      typingTimer = setTimeout(typeNextChar, 35);
+    }
+
+    typeNextChar();
+
+    // Handle skipping on click
+    const box = activeScene.querySelector('.text-box');
+    box.onclick = () => {
+      if (typingTimer) {
+        clearTimeout(typingTimer);
+        typingTimer = null;
+        typeElem.innerHTML = fullText;
+      } else {
+        // Already fully typed, move to next scene (optional behavior)
+        const currentId = activeScene.id;
+        const currentSceneNum = parseInt(currentId.replace('scene', ''));
+        goToScene(currentSceneNum + 1);
+      }
+    };
+  }
+  const box = activeScene.querySelector('.text-box');
+const skipEnabled = box?.getAttribute('data-skip-enabled') !== 'false';
+
+if (skipEnabled) {
+  box.onclick = () => {
+    if (typingTimer) {
+      clearTimeout(typingTimer);
+      typingTimer = null;
+      typeElem.innerHTML = fullText;
+    } else {
+      const currentId = activeScene.id;
+      const currentSceneNum = parseInt(currentId.replace('scene', ''));
+      
+      if (currentId === 'scene12') {
+        window.location.href = 'pt 1 fight.html';
+      } else {
+        goToScene(currentSceneNum + 1);
+      }
+    }
+  };
+}
+function typeInActiveScene() {
+  const activeScene = document.querySelector('.scene.active');
+  const typeElem = activeScene?.querySelector('.typewriter');
+  const fullText = typeElem?.getAttribute('data-text') || "";
+  if (!typeElem) return;
+
+  typeElem.innerHTML = "";
+  let i = 0;
+
+  function typeNextChar() {
+    if (i >= fullText.length) {
+      typingTimer = null;
+      return;
+    }
+    typeElem.innerHTML += fullText.charAt(i);
+    i++;
+    typingTimer = setTimeout(typeNextChar, 35);
+  }
+
+  typeNextChar();
+
+  // 🛠️ NEW: Check if clicking text box should skip or not
+  const box = activeScene.querySelector('.text-box');
+  const skipEnabled = box?.getAttribute('data-skip-enabled') !== 'false';
+
+  if (box && skipEnabled) {
+    box.onclick = () => {
+      if (typingTimer) {
+        clearTimeout(typingTimer);
+        typingTimer = null;
+        typeElem.innerHTML = fullText;
+      } else {
+        const currentId = activeScene.id;
+        const currentSceneNum = parseInt(currentId.replace('scene', ''));
+        if (currentId === 'scene12') {
+          window.location.href = 'pt 1 fight.html';
+        } else {
+          goToScene(currentSceneNum + 1);
+        }
+      }
+    };
+  }
+}
+
+function fadeToBlackAndGo(targetUrl) {
+  const overlay = document.getElementById('black-transition');
+  overlay.classList.add('active');
+
+  setTimeout(() => {
+    window.location.href = targetUrl;
+  }, 700); // match the CSS transition timing
+}
+
+</script>
+
+<div id="black-transition"></div>
+
+</body>
+</html>
+
